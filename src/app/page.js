@@ -64,7 +64,7 @@ export default function Home() {
             transition={{ y: { duration: 3, repeat: Infinity, ease: "easeInOut" } }}
             onHoverStart={() => setIsLogoHovered(true)}
             onHoverEnd={() => setIsLogoHovered(false)}
-            className="cursor-pointer relative z-20" 
+            className="cursor-pointer relative z-20" // Removed pb-2 to reduce space
           >
              <img 
                src={heroLogo} 
@@ -74,8 +74,8 @@ export default function Home() {
              />
           </motion.div>
 
-          {/* ANIMATED SLOGAN - Negative Margin (-mt-4) pulls it UP towards the logo */}
-          <div className="flex items-center justify-center -mt-4 relative z-30">
+          {/* ANIMATED SLOGAN - Strong Negative Margin (-mt-12) to pull text UP */}
+          <div className="flex items-center justify-center -mt-12 relative z-30">
             <motion.h1 
               className="text-xl md:text-3xl font-bold tracking-wide leading-none"
               variants={sloganContainer}
@@ -94,8 +94,8 @@ export default function Home() {
             </motion.h1>
           </div>
           
-          {/* Buttons - Added margin top to separate from logo/slogan */}
-          <div className="flex flex-wrap justify-center gap-4 pt-12">
+          {/* Buttons - Adjusted margin top */}
+          <div className="flex flex-wrap justify-center gap-4 pt-16">
             <a href="#research" className="inline-block bg-[#0ea5e9] text-black px-12 py-4 rounded-full font-bold text-lg hover:scale-105 transition-transform shadow-[0_0_20px_rgba(14,165,233,0.4)]">Explore Research</a>
             <a href="#careers" className="inline-block bg-white/10 border border-white/20 text-white px-12 py-4 rounded-full font-bold text-lg hover:bg-white/20 transition-all">Join Us</a>
           </div>
