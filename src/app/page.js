@@ -1,11 +1,11 @@
 "use client";
 import { useData } from "./DataContext";
 import { motion, AnimatePresence } from "framer-motion";
-import { ArrowRight, Briefcase, MapPin, Calendar, CheckCircle, Lock, X, Image as ImageIcon } from "lucide-react";
+import { ArrowRight, Briefcase, MapPin, Calendar, CheckCircle, Lock, X, Image as ImageIcon, Database, BarChart2, Lightbulb, TrendingUp } from "lucide-react";
 import { useState } from "react";
 
 export default function Home() {
-  const { heroLogo, heroSizes, posts, aboutData, experienceStats, jobs, currentUser, sendMessage, handleFileUpload } = useData();
+  const { heroLogo, heroSizes, posts, aboutData, jobs, currentUser, sendMessage, handleFileUpload } = useData();
   const [selectedJob, setSelectedJob] = useState(null);
   const [showGallery, setShowGallery] = useState(false);
   const [msgText, setMsgText] = useState("");
@@ -41,8 +41,7 @@ export default function Home() {
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-blue-900/10 via-[#020617] to-[#020617]"></div>
         <div className="relative z-10 text-center space-y-10 max-w-6xl px-4">
           <motion.div initial={{ opacity: 0, scale: 0.5, y: -20 }} animate={{ opacity: 1, scale: 1, y: [0, -15, 0] }} transition={{ duration: 0.8, y: { duration: 3, repeat: Infinity, ease: "easeInOut" }}}>
-             {/* GLOW EFFECT ON HERO LOGO */}
-             <img src={heroLogo} style={{ height: "var(--hero-logo-h)" }} className="relative z-10 w-auto mx-auto object-contain brightness-0 invert drop-shadow-[0_0_45px_rgba(14,165,233,0.6)] transition-all duration-300 hover:drop-shadow-[0_0_80px_rgba(14,165,233,0.9)]" alt="Hero Logo" />
+             <img src={heroLogo} style={{ height: "var(--hero-logo-h)" }} className="relative z-10 w-auto mx-auto object-contain brightness-0 invert drop-shadow-[0_0_45px_rgba(14,165,233,0.6)]" alt="Hero Logo" />
           </motion.div>
           <motion.h1 initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.3 }} className="text-4xl md:text-6xl lg:text-8xl font-bold tracking-tight leading-tight">
             Where Every Search <br/> Has a <span className="text-[#0ea5e9]">Value</span>
@@ -54,15 +53,28 @@ export default function Home() {
         </div>
       </section>
 
-      {/* 2. STATS */}
-      <section className="py-20 bg-[#0f172a] relative border-y border-white/10">
-        <div className="max-w-7xl mx-auto px-6 grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
-            {experienceStats.map((stat, index) => (
-                <div key={index}>
-                    <h3 className="text-4xl md:text-5xl font-extrabold text-[#0ea5e9] mb-2">{stat.value}</h3>
-                    <p className="text-gray-400 text-sm uppercase tracking-wider font-semibold">{stat.label}</p>
+      {/* 2. OUR EXPERTISE (Replaces Old Stats Section) */}
+      <section className="py-24 bg-[#010409] relative border-y border-white/5">
+        <div className="max-w-7xl mx-auto px-6">
+           <div className="text-center mb-16">
+             <h2 className="text-3xl md:text-5xl font-bold mb-4">Our <span className="bg-blue-600 text-white px-2">Expertise</span></h2>
+             <p className="text-gray-400 max-w-2xl mx-auto">Comprehensive data research solutions designed to unlock the full potential of your information.</p>
+           </div>
+           
+           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+              {[
+                { icon: Database, title: "Data Collection", desc: "Comprehensive data gathering from multiple sources with rigorous validation protocols." },
+                { icon: BarChart2, title: "Advanced Analytics", desc: "Cutting-edge analytical methods to extract meaningful patterns from complex datasets." },
+                { icon: Lightbulb, title: "Actionable Insights", desc: "Transform raw data into strategic recommendations that drive business decisions." },
+                { icon: TrendingUp, title: "Trend Forecasting", desc: "Predictive modeling to anticipate market shifts and emerging opportunities." }
+              ].map((item, i) => (
+                <div key={i} className="bg-[#0f172a] p-8 rounded-2xl border border-white/10 hover:border-[#0ea5e9] hover:-translate-y-2 transition-all group">
+                   <div className="w-12 h-12 bg-[#0ea5e9]/10 rounded-lg flex items-center justify-center text-[#0ea5e9] mb-6 group-hover:bg-[#0ea5e9] group-hover:text-black transition-colors"><item.icon size={24}/></div>
+                   <h3 className="text-xl font-bold mb-3">{item.title}</h3>
+                   <p className="text-gray-400 text-sm leading-relaxed">{item.desc}</p>
                 </div>
-            ))}
+              ))}
+           </div>
         </div>
       </section>
 
@@ -70,7 +82,7 @@ export default function Home() {
       <section id="research" className="py-24 relative overflow-hidden">
         <div className="max-w-7xl mx-auto px-6 relative z-10">
           <div className="flex justify-between items-end mb-12">
-             <h2 className="text-3xl md:text-4xl font-bold border-l-4 border-[#0ea5e9] pl-6 leading-tight">Latest <span className="text-[#0ea5e9]">Research</span></h2>
+             <h2 className="text-3xl md:text-4xl font-bold border-l-4 border-[#0ea5e9] pl-6 leading-tight">Latest <span className="text-[#0ea5e9]">Updates</span></h2>
           </div>
           <div className="grid md:grid-cols-3 gap-8">
             {featuredPosts.length > 0 ? featuredPosts.map((post) => (
@@ -85,7 +97,7 @@ export default function Home() {
                   <div className="mt-6 pt-6 border-t border-white/5 flex items-center text-[#0ea5e9] text-sm font-bold gap-2 group-hover:gap-3 transition-all">Read More <ArrowRight size={16}/></div>
                 </div>
               </div>
-            )) : <div className="col-span-3 text-center py-16 border border-dashed border-white/10 rounded-2xl text-gray-500">No Featured Research.</div>}
+            )) : <div className="col-span-3 text-center py-16 border border-dashed border-white/10 rounded-2xl text-gray-500">No Featured Updates.</div>}
           </div>
         </div>
       </section>

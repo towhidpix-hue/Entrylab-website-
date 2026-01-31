@@ -13,13 +13,9 @@ const Footer = () => {
   return (
     <footer className="bg-[#010409] border-t border-white/10 pt-16 pb-8 relative z-10 mt-auto">
       <div className="max-w-7xl mx-auto px-6 grid md:grid-cols-4 gap-12 mb-12">
-        <div className="col-span-1 space-y-6">
-          {/* BIGGER FOOTER LOGO WITH GLOW */}
-          <img src={navLogo} alt="Entrylab Logo" className="h-24 w-auto object-contain brightness-0 invert transition-all duration-300 hover:drop-shadow-[0_0_20px_rgba(14,165,233,0.8)]" />
-          <p className="text-gray-400 text-sm leading-relaxed">Transforming data into actionable insights.</p>
-          <div className="flex gap-4 text-gray-400 mt-4"><Facebook size={20}/><Twitter size={20}/><Linkedin size={20}/><Instagram size={20}/></div>
-        </div>
+        <div className="col-span-1 space-y-6"><img src={navLogo} alt="Entrylab Logo" className="h-10 w-auto object-contain brightness-0 invert" /><p className="text-gray-400 text-sm leading-relaxed">Transforming data into actionable insights.</p><div className="flex gap-4 text-gray-400 mt-4"><Facebook size={20}/><Twitter size={20}/><Linkedin size={20}/><Instagram size={20}/></div></div>
         <div><h4 className="text-white font-bold mb-6">Quick Links</h4><ul className="space-y-3 text-sm text-gray-400">
+          {/* Navigation Fix: Added slash / before hashes */}
           <li><Link href="/" className="hover:text-[#0ea5e9] flex items-center gap-2">› Home</Link></li>
           <li><Link href="/#research" className="hover:text-[#0ea5e9] flex items-center gap-2">› Research</Link></li>
           <li><Link href="/#careers" className="hover:text-[#0ea5e9] flex items-center gap-2">› Careers</Link></li>
@@ -43,17 +39,13 @@ const Navbar = () => {
         @media (min-width: 768px) { :root { --nav-logo-h: ${navSizes.tablet}%; } }
         @media (min-width: 1024px) { :root { --nav-logo-h: ${navSizes.pc}%; } }
       `}</style>
-      {/* TALLER NAVBAR (h-32) */}
-      <nav className="fixed top-0 left-0 right-0 z-50 bg-[#020617]/95 backdrop-blur-md border-b border-white/10 shadow-lg h-32 flex items-center transition-all">
+      
+      {/* FIXED HEIGHT NAVBAR: h-24 ensures it never grows larger */}
+      <nav className="fixed top-0 left-0 right-0 z-50 bg-[#020617]/95 backdrop-blur-md border-b border-white/10 shadow-lg h-24 flex items-center">
         <div className="max-w-7xl mx-auto px-6 w-full flex items-center justify-between h-full">
           <Link href="/" className="flex items-center gap-2 hover:opacity-80 transition-opacity h-full py-2">
-            {/* GLOW EFFECT ADDED TO NAV LOGO */}
-            <img 
-              src={navLogo} 
-              alt="Entrylab Logo" 
-              style={{ height: `var(--nav-logo-h)` }} 
-              className="w-auto max-h-full object-contain brightness-0 invert transition-all duration-300 hover:drop-shadow-[0_0_25px_rgba(14,165,233,0.8)]" 
-            />
+            {/* Logo constrained to max-h-full so it doesn't stretch navbar */}
+            <img src={navLogo} alt="Entrylab Logo" style={{ height: `var(--nav-logo-h)` }} className="w-auto max-h-full object-contain brightness-0 invert transition-all duration-300" />
           </Link>
           <div className="hidden md:flex items-center gap-8 text-sm font-bold text-gray-300 tracking-wide">
             <Link href="/" className="hover:text-[#0ea5e9] transition-colors">Home</Link>
@@ -66,7 +58,7 @@ const Navbar = () => {
           <div className="hidden md:flex items-center gap-4"><Link href="/entry-manage"><button className="bg-[#0ea5e9] hover:bg-blue-500 text-black font-extrabold px-6 py-2.5 rounded-full text-sm transition-all shadow-[0_0_15px_rgba(14,165,233,0.4)]">{currentUser ? "Dashboard" : "Sign In"}</button></Link></div>
         </div>
         {isMobileMenuOpen && (
-          <div className="md:hidden bg-[#0f172a] border-t border-white/10 absolute w-full left-0 top-full px-6 py-8 flex flex-col gap-6 shadow-2xl h-screen">
+          <div className="md:hidden bg-[#0f172a] border-t border-white/10 absolute w-full left-0 top-24 px-6 py-8 flex flex-col gap-6 shadow-2xl h-screen">
             <Link href="/" onClick={() => setIsMobileMenuOpen(false)} className="text-xl font-bold text-white hover:text-[#0ea5e9]">Home</Link>
             <Link href="/#research" onClick={() => setIsMobileMenuOpen(false)} className="text-xl font-bold text-white hover:text-[#0ea5e9]">Research</Link>
             <Link href="/#careers" onClick={() => setIsMobileMenuOpen(false)} className="text-xl font-bold text-white hover:text-[#0ea5e9]">Careers</Link>
@@ -83,7 +75,7 @@ const Navbar = () => {
 export default function RootLayout({ children }) {
   return (
     <html lang="en" className="scroll-smooth">
-      <body className={`${inter.className} bg-[#020617] text-white antialiased flex flex-col min-h-screen pt-32`}>
+      <body className={`${inter.className} bg-[#020617] text-white antialiased flex flex-col min-h-screen pt-24`}>
         <DataProvider><Navbar /><div className="flex-grow">{children}</div><Footer /></DataProvider>
       </body>
     </html>
