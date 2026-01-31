@@ -5,9 +5,8 @@ import { ArrowRight, Briefcase, MapPin, Calendar, CheckCircle, Lock, X, Image as
 import { useState } from "react";
 
 export default function Home() {
-  const { heroLogo, heroSizes, posts, aboutData, jobs, currentUser, sendMessage, handleFileUpload } = useData();
+  const { heroLogo, heroSizes, posts, aboutData, jobs, currentUser, sendMessage, handleFileUpload, showGallery, setShowGallery } = useData();
   const [selectedJob, setSelectedJob] = useState(null);
-  const [showGallery, setShowGallery] = useState(false);
   const [msgText, setMsgText] = useState("");
   const [attachment, setAttachment] = useState(null);
 
@@ -53,14 +52,13 @@ export default function Home() {
         </div>
       </section>
 
-      {/* 2. OUR EXPERTISE (Replaces Old Stats Section) */}
+      {/* 2. OUR EXPERTISE (Card Grid - New Design) */}
       <section className="py-24 bg-[#010409] relative border-y border-white/5">
         <div className="max-w-7xl mx-auto px-6">
            <div className="text-center mb-16">
              <h2 className="text-3xl md:text-5xl font-bold mb-4">Our <span className="bg-blue-600 text-white px-2">Expertise</span></h2>
              <p className="text-gray-400 max-w-2xl mx-auto">Comprehensive data research solutions designed to unlock the full potential of your information.</p>
            </div>
-           
            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
               {[
                 { icon: Database, title: "Data Collection", desc: "Comprehensive data gathering from multiple sources with rigorous validation protocols." },
@@ -109,7 +107,6 @@ export default function Home() {
               <h2 className="text-3xl md:text-5xl font-bold mb-4">Open <span className="text-[#0ea5e9]">Positions</span></h2>
               <p className="text-gray-400 max-w-2xl mx-auto">Join our team of researchers and engineers building the future of data.</p>
             </div>
-            
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
               {jobs.map(job => (
                 <div key={job.id} className={`bg-[#020617] p-8 rounded-2xl border ${job.status === 'open' ? 'border-white/10 hover:border-[#0ea5e9]' : 'border-red-900/30 opacity-60'} transition-all group flex flex-col justify-between min-h-[250px]`}>
@@ -133,7 +130,7 @@ export default function Home() {
          </div>
       </section>
 
-      {/* 5. ABOUT US */}
+      {/* 5. ABOUT US & GALLERY BUTTON */}
       <section id="about" className="py-24 relative overflow-hidden">
         <div className="max-w-7xl mx-auto px-6 relative z-10 grid md:grid-cols-2 gap-16 items-center">
            <div className="order-2 md:order-1">
