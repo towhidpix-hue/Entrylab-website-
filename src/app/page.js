@@ -9,7 +9,7 @@ export default function Home() {
   const [selectedJob, setSelectedJob] = useState(null);
   const [msgText, setMsgText] = useState("");
   const [attachment, setAttachment] = useState(null);
-  const [isLogoHovered, setIsLogoHovered] = useState(false); // State for Hero Hover
+  const [isLogoHovered, setIsLogoHovered] = useState(false);
 
   const featuredPosts = posts.filter(p => p.featured && p.category === 'Research');
 
@@ -49,21 +49,22 @@ export default function Home() {
         @media (min-width: 1024px) { :root { --hero-logo-h: ${heroSizes.pc}px; } }
       `}</style>
 
-      {/* 1. HERO SECTION (Hover Interaction) */}
+      {/* 1. HERO SECTION */}
       <section id="home" className="relative min-h-screen flex flex-col items-center justify-center py-20 overflow-hidden">
         <div className="absolute inset-0 bg-grid-pattern pointer-events-none mask-radial-faded"></div>
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-blue-900/10 via-[#020617] to-[#020617]"></div>
         
-        <div className="relative z-10 text-center space-y-6 max-w-7xl px-4 flex flex-col items-center">
+        {/* Changed space-y-6 to space-y-1 to bring text UP */}
+        <div className="relative z-10 text-center space-y-1 max-w-7xl px-4 flex flex-col items-center">
           
-          {/* LOGO CONTAINER - Hover triggers text */}
+          {/* LOGO CONTAINER */}
           <motion.div 
             initial={{ opacity: 0, scale: 0.5, y: -20 }} 
-            animate={{ opacity: 1, scale: 1, y: [0, -10, 0] }} 
+            animate={{ opacity: 1, scale: 1, y: [0, -5, 0] }} // Reduced bounce height
             transition={{ y: { duration: 3, repeat: Infinity, ease: "easeInOut" } }}
             onHoverStart={() => setIsLogoHovered(true)}
             onHoverEnd={() => setIsLogoHovered(false)}
-            className="cursor-pointer relative z-20"
+            className="cursor-pointer relative z-20 pb-2" // Added small padding bottom
           >
              <img 
                src={heroLogo} 
@@ -73,10 +74,10 @@ export default function Home() {
              />
           </motion.div>
 
-          {/* ANIMATED SLOGAN (Appears on Hover) */}
-          <div className="h-16 flex items-center justify-center"> {/* Fixed height to prevent layout jump */}
+          {/* ANIMATED SLOGAN - Right under logo */}
+          <div className="flex items-center justify-center min-h-[40px]">
             <motion.h1 
-              className="text-2xl md:text-4xl font-bold tracking-wide"
+              className="text-2xl md:text-4xl font-bold tracking-wide leading-none"
               variants={sloganContainer}
               initial="hidden"
               animate={isLogoHovered ? "visible" : "hidden"}
@@ -93,7 +94,8 @@ export default function Home() {
             </motion.h1>
           </div>
           
-          <div className="flex flex-wrap justify-center gap-4 pt-4">
+          {/* Buttons pushed down slightly */}
+          <div className="flex flex-wrap justify-center gap-4 pt-10">
             <a href="#research" className="inline-block bg-[#0ea5e9] text-black px-12 py-4 rounded-full font-bold text-lg hover:scale-105 transition-transform shadow-[0_0_20px_rgba(14,165,233,0.4)]">Explore Research</a>
             <a href="#careers" className="inline-block bg-white/10 border border-white/20 text-white px-12 py-4 rounded-full font-bold text-lg hover:bg-white/20 transition-all">Join Us</a>
           </div>
@@ -179,7 +181,7 @@ export default function Home() {
          </div>
       </section>
 
-      {/* 5. ABOUT US & GALLERY */}
+      {/* 5. ABOUT US */}
       <section id="about" className="py-24 relative overflow-hidden">
         <div className="max-w-7xl mx-auto px-6 relative z-10 grid md:grid-cols-2 gap-16 items-center">
            <div className="order-2 md:order-1">
@@ -214,34 +216,19 @@ export default function Home() {
       )}
       </AnimatePresence>
 
-      {/* FANCY MASONRY GALLERY MODAL */}
       <AnimatePresence>
         {showGallery && (
-          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="fixed inset-0 z-50 bg-black/98 backdrop-blur-2xl p-4 md:p-10 overflow-y-auto">
+          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="fixed inset-0 z-50 bg-black/95 backdrop-blur-xl p-4 md:p-10 overflow-y-auto">
              <button className="fixed top-6 right-6 z-50 text-white/70 hover:text-white bg-white/10 p-2 rounded-full transition-colors" onClick={() => setShowGallery(false)}><X size={32}/></button>
              <div className="max-w-7xl mx-auto mt-12">
-               <div className="text-center mb-12">
-                 <h2 className="text-4xl md:text-6xl font-bold mb-4">Life at <span className="text-[#0ea5e9]">EntryLab</span></h2>
-                 <p className="text-gray-400">Capturing our moments, milestones, and memories.</p>
-               </div>
-               
+               <h2 className="text-4xl font-bold mb-12 text-center">Life at <span className="text-[#0ea5e9]">EntryLab</span></h2>
                {aboutData.gallery.length === 0 ? (
-                 <p className="text-center text-gray-500 text-xl py-20 border-2 border-dashed border-white/10 rounded-2xl">Gallery is empty. Add photos in Admin Panel.</p>
+                 <p className="text-center text-gray-500 text-xl py-20">Gallery is empty. Add photos in Admin Panel.</p>
                ) : (
-                 // MASONRY LAYOUT
                  <div className="columns-1 md:columns-3 gap-6 space-y-6">
                    {aboutData.gallery.map((img) => (
-                     <motion.div 
-                        key={img.id} 
-                        initial={{ opacity: 0, y: 20 }} 
-                        whileInView={{ opacity: 1, y: 0 }} 
-                        viewport={{ once: true }}
-                        className="break-inside-avoid rounded-2xl overflow-hidden border border-white/10 group cursor-pointer relative"
-                     >
+                     <motion.div key={img.id} initial={{ opacity: 0, scale: 0.9 }} whileInView={{ opacity: 1, scale: 1 }} viewport={{once:true}} className="break-inside-avoid rounded-2xl overflow-hidden border border-white/10 group">
                        <img src={img.src} className="w-full h-auto object-cover group-hover:scale-105 transition-transform duration-700"/>
-                       <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
-                         <ImageIcon className="text-white w-8 h-8 opacity-80"/>
-                       </div>
                      </motion.div>
                    ))}
                  </div>
