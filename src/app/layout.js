@@ -13,7 +13,8 @@ const Footer = () => {
   const handleNav = () => setShowGallery(false);
 
   return (
-    <footer className="bg-[#010409] border-t border-white/10 pt-16 pb-8 relative z-10 mt-auto">
+    // Fixed: z-0 prevents overlap
+    <footer className="bg-[#010409] border-t border-white/10 pt-16 pb-8 relative z-0 mt-auto">
       <div className="max-w-7xl mx-auto px-6 grid md:grid-cols-4 gap-12 mb-12">
         <div className="col-span-1 space-y-6">
           <img src={navLogo} alt="Entrylab Logo" className="h-10 w-auto object-contain transition-all duration-300 hover:drop-shadow-[0_0_20px_rgba(14,165,233,0.8)]" />
@@ -49,7 +50,6 @@ const Navbar = () => {
       <nav className="fixed top-0 left-0 right-0 z-50 bg-[#020617]/95 backdrop-blur-md border-b border-white/10 shadow-lg h-24 flex items-center">
         <div className="max-w-7xl mx-auto px-6 w-full flex items-center justify-between h-full">
           <Link href="/" onClick={handleNav} className="flex items-center gap-2 hover:opacity-80 transition-opacity h-full py-2">
-            {/* REMOVED FILTER HERE TOO */}
             <img src={navLogo} alt="Entrylab Logo" style={{ height: `var(--nav-logo-h)` }} className="w-auto max-h-full object-contain transition-all duration-300 hover:drop-shadow-[0_0_25px_rgba(14,165,233,0.8)]" />
           </Link>
           <div className="hidden md:flex items-center gap-8 text-sm font-bold text-gray-300 tracking-wide">
