@@ -9,13 +9,21 @@ export default function Home() {
   const [selectedJob, setSelectedJob] = useState(null);
   const [msgText, setMsgText] = useState("");
   const [attachment, setAttachment] = useState(null);
+  const [isLogoHovered, setIsLogoHovered] = useState(false); // State for Hero Hover
 
   const featuredPosts = posts.filter(p => p.featured && p.category === 'Research');
 
-  // Animation variants for the text
-  const sentence = "Where Every Search Has a ";
-  const letterAnim = {
-    hidden: { opacity: 0, y: 50 },
+  // Animation for the Slogan
+  const sloganSentence = "Where Every Search Has a ";
+  const sloganContainer = {
+    hidden: { opacity: 0 },
+    visible: { 
+      opacity: 1,
+      transition: { staggerChildren: 0.05, delayChildren: 0.1 }
+    }
+  };
+  const sloganLetter = {
+    hidden: { opacity: 0, y: 10 },
     visible: { opacity: 1, y: 0 }
   };
 
@@ -41,38 +49,49 @@ export default function Home() {
         @media (min-width: 1024px) { :root { --hero-logo-h: ${heroSizes.pc}px; } }
       `}</style>
 
-      {/* 1. HERO */}
+      {/* 1. HERO SECTION (Hover Interaction) */}
       <section id="home" className="relative min-h-screen flex flex-col items-center justify-center py-20 overflow-hidden">
         <div className="absolute inset-0 bg-grid-pattern pointer-events-none mask-radial-faded"></div>
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-blue-900/10 via-[#020617] to-[#020617]"></div>
-        <div className="relative z-10 text-center space-y-8 max-w-7xl px-4">
+        
+        <div className="relative z-10 text-center space-y-6 max-w-7xl px-4 flex flex-col items-center">
           
-          {/* Logo Container - Grows with the logo */}
-          <motion.div initial={{ opacity: 0, scale: 0.5, y: -20 }} animate={{ opacity: 1, scale: 1, y: [0, -15, 0] }} transition={{ duration: 0.8, y: { duration: 3, repeat: Infinity, ease: "easeInOut" }}}>
-             <img src={heroLogo} style={{ height: "var(--hero-logo-h)" }} className="relative z-10 w-auto mx-auto object-contain brightness-0 invert drop-shadow-[0_0_45px_rgba(14,165,233,0.6)] transition-all duration-300 hover:drop-shadow-[0_0_80px_rgba(14,165,233,0.9)]" alt="Hero Logo" />
+          {/* LOGO CONTAINER - Hover triggers text */}
+          <motion.div 
+            initial={{ opacity: 0, scale: 0.5, y: -20 }} 
+            animate={{ opacity: 1, scale: 1, y: [0, -10, 0] }} 
+            transition={{ y: { duration: 3, repeat: Infinity, ease: "easeInOut" } }}
+            onHoverStart={() => setIsLogoHovered(true)}
+            onHoverEnd={() => setIsLogoHovered(false)}
+            className="cursor-pointer relative z-20"
+          >
+             <img 
+               src={heroLogo} 
+               style={{ height: "var(--hero-logo-h)" }} 
+               className="w-auto mx-auto object-contain brightness-0 invert drop-shadow-[0_0_45px_rgba(14,165,233,0.4)] transition-all duration-500 hover:drop-shadow-[0_0_100px_rgba(14,165,233,0.8)] hover:scale-105" 
+               alt="Hero Logo" 
+             />
           </motion.div>
 
-          {/* ANIMATED TEXT - Smaller & One Line */}
-          <motion.h1 
-            className="text-2xl md:text-4xl lg:text-5xl font-bold tracking-wide leading-tight whitespace-nowrap overflow-visible"
-            initial="hidden"
-            animate="visible"
-            variants={{
-              visible: { transition: { staggerChildren: 0.05 } }
-            }}
-          >
-            {sentence.split("").map((char, index) => (
-              <motion.span key={index} variants={letterAnim}>{char}</motion.span>
-            ))}
-            <motion.span 
-              initial={{ opacity: 0, scale: 0 }} 
-              animate={{ opacity: 1, scale: 1 }} 
-              transition={{ delay: 1.5, type: "spring", stiffness: 200 }}
-              className="text-[#0ea5e9] inline-block ml-1"
+          {/* ANIMATED SLOGAN (Appears on Hover) */}
+          <div className="h-16 flex items-center justify-center"> {/* Fixed height to prevent layout jump */}
+            <motion.h1 
+              className="text-2xl md:text-4xl font-bold tracking-wide"
+              variants={sloganContainer}
+              initial="hidden"
+              animate={isLogoHovered ? "visible" : "hidden"}
             >
-              Value
-            </motion.span>
-          </motion.h1>
+              {sloganSentence.split("").map((char, index) => (
+                <motion.span key={index} variants={sloganLetter}>{char}</motion.span>
+              ))}
+              <motion.span 
+                variants={sloganLetter}
+                className="text-[#0ea5e9] inline-block ml-2 font-extrabold"
+              >
+                Value
+              </motion.span>
+            </motion.h1>
+          </div>
           
           <div className="flex flex-wrap justify-center gap-4 pt-4">
             <a href="#research" className="inline-block bg-[#0ea5e9] text-black px-12 py-4 rounded-full font-bold text-lg hover:scale-105 transition-transform shadow-[0_0_20px_rgba(14,165,233,0.4)]">Explore Research</a>
@@ -81,7 +100,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* 2. OUR EXPERTISE (Card Grid) */}
+      {/* 2. OUR EXPERTISE */}
       <section className="py-24 bg-[#010409] relative border-y border-white/5">
         <div className="max-w-7xl mx-auto px-6">
            <div className="text-center mb-16">
@@ -124,7 +143,7 @@ export default function Home() {
                   <div className="mt-6 pt-6 border-t border-white/5 flex items-center text-[#0ea5e9] text-sm font-bold gap-2 group-hover:gap-3 transition-all">Read More <ArrowRight size={16}/></div>
                 </div>
               </div>
-            )) : <div className="col-span-3 text-center py-16 border border-dashed border-white/10 rounded-2xl text-gray-500">No Featured Updates. Select them in Admin.</div>}
+            )) : <div className="col-span-3 text-center py-16 border border-dashed border-white/10 rounded-2xl text-gray-500">No Featured Updates.</div>}
           </div>
         </div>
       </section>
@@ -160,7 +179,7 @@ export default function Home() {
          </div>
       </section>
 
-      {/* 5. ABOUT US */}
+      {/* 5. ABOUT US & GALLERY */}
       <section id="about" className="py-24 relative overflow-hidden">
         <div className="max-w-7xl mx-auto px-6 relative z-10 grid md:grid-cols-2 gap-16 items-center">
            <div className="order-2 md:order-1">
@@ -195,19 +214,34 @@ export default function Home() {
       )}
       </AnimatePresence>
 
+      {/* FANCY MASONRY GALLERY MODAL */}
       <AnimatePresence>
         {showGallery && (
-          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="fixed inset-0 z-50 bg-black/95 backdrop-blur-xl p-4 md:p-10 overflow-y-auto">
+          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="fixed inset-0 z-50 bg-black/98 backdrop-blur-2xl p-4 md:p-10 overflow-y-auto">
              <button className="fixed top-6 right-6 z-50 text-white/70 hover:text-white bg-white/10 p-2 rounded-full transition-colors" onClick={() => setShowGallery(false)}><X size={32}/></button>
              <div className="max-w-7xl mx-auto mt-12">
-               <h2 className="text-4xl font-bold mb-12 text-center">Life at <span className="text-[#0ea5e9]">EntryLab</span></h2>
+               <div className="text-center mb-12">
+                 <h2 className="text-4xl md:text-6xl font-bold mb-4">Life at <span className="text-[#0ea5e9]">EntryLab</span></h2>
+                 <p className="text-gray-400">Capturing our moments, milestones, and memories.</p>
+               </div>
+               
                {aboutData.gallery.length === 0 ? (
-                 <p className="text-center text-gray-500 text-xl py-20">Gallery is empty. Add photos in Admin Panel.</p>
+                 <p className="text-center text-gray-500 text-xl py-20 border-2 border-dashed border-white/10 rounded-2xl">Gallery is empty. Add photos in Admin Panel.</p>
                ) : (
-                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                 // MASONRY LAYOUT
+                 <div className="columns-1 md:columns-3 gap-6 space-y-6">
                    {aboutData.gallery.map((img) => (
-                     <motion.div key={img.id} initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} className="rounded-2xl overflow-hidden border border-white/10 aspect-[4/3] group">
-                       <img src={img.src} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"/>
+                     <motion.div 
+                        key={img.id} 
+                        initial={{ opacity: 0, y: 20 }} 
+                        whileInView={{ opacity: 1, y: 0 }} 
+                        viewport={{ once: true }}
+                        className="break-inside-avoid rounded-2xl overflow-hidden border border-white/10 group cursor-pointer relative"
+                     >
+                       <img src={img.src} className="w-full h-auto object-cover group-hover:scale-105 transition-transform duration-700"/>
+                       <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                         <ImageIcon className="text-white w-8 h-8 opacity-80"/>
+                       </div>
                      </motion.div>
                    ))}
                  </div>
