@@ -54,17 +54,17 @@ export default function Home() {
         <div className="absolute inset-0 bg-grid-pattern pointer-events-none mask-radial-faded"></div>
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-blue-900/10 via-[#020617] to-[#020617]"></div>
         
-        {/* Changed space-y-6 to space-y-1 to bring text UP */}
-        <div className="relative z-10 text-center space-y-1 max-w-7xl px-4 flex flex-col items-center">
+        {/* Main Content Container - space-y-0 to remove all auto-spacing */}
+        <div className="relative z-10 text-center space-y-0 max-w-7xl px-4 flex flex-col items-center">
           
           {/* LOGO CONTAINER */}
           <motion.div 
             initial={{ opacity: 0, scale: 0.5, y: -20 }} 
-            animate={{ opacity: 1, scale: 1, y: [0, -5, 0] }} // Reduced bounce height
+            animate={{ opacity: 1, scale: 1, y: [0, -5, 0] }} 
             transition={{ y: { duration: 3, repeat: Infinity, ease: "easeInOut" } }}
             onHoverStart={() => setIsLogoHovered(true)}
             onHoverEnd={() => setIsLogoHovered(false)}
-            className="cursor-pointer relative z-20 pb-2" // Added small padding bottom
+            className="cursor-pointer relative z-20" 
           >
              <img 
                src={heroLogo} 
@@ -74,10 +74,10 @@ export default function Home() {
              />
           </motion.div>
 
-          {/* ANIMATED SLOGAN - Right under logo */}
-          <div className="flex items-center justify-center min-h-[40px]">
+          {/* ANIMATED SLOGAN - Negative Margin (-mt-4) pulls it UP towards the logo */}
+          <div className="flex items-center justify-center -mt-4 relative z-30">
             <motion.h1 
-              className="text-2xl md:text-4xl font-bold tracking-wide leading-none"
+              className="text-xl md:text-3xl font-bold tracking-wide leading-none"
               variants={sloganContainer}
               initial="hidden"
               animate={isLogoHovered ? "visible" : "hidden"}
@@ -94,8 +94,8 @@ export default function Home() {
             </motion.h1>
           </div>
           
-          {/* Buttons pushed down slightly */}
-          <div className="flex flex-wrap justify-center gap-4 pt-10">
+          {/* Buttons - Added margin top to separate from logo/slogan */}
+          <div className="flex flex-wrap justify-center gap-4 pt-12">
             <a href="#research" className="inline-block bg-[#0ea5e9] text-black px-12 py-4 rounded-full font-bold text-lg hover:scale-105 transition-transform shadow-[0_0_20px_rgba(14,165,233,0.4)]">Explore Research</a>
             <a href="#careers" className="inline-block bg-white/10 border border-white/20 text-white px-12 py-4 rounded-full font-bold text-lg hover:bg-white/20 transition-all">Join Us</a>
           </div>
@@ -181,7 +181,7 @@ export default function Home() {
          </div>
       </section>
 
-      {/* 5. ABOUT US */}
+      {/* 5. ABOUT US & GALLERY */}
       <section id="about" className="py-24 relative overflow-hidden">
         <div className="max-w-7xl mx-auto px-6 relative z-10 grid md:grid-cols-2 gap-16 items-center">
            <div className="order-2 md:order-1">
