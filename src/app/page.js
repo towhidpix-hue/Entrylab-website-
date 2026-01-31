@@ -12,6 +12,13 @@ export default function Home() {
 
   const featuredPosts = posts.filter(p => p.featured && p.category === 'Research');
 
+  // Animation variants for the text
+  const sentence = "Where Every Search Has a ";
+  const letterAnim = {
+    hidden: { opacity: 0, y: 50 },
+    visible: { opacity: 1, y: 0 }
+  };
+
   const handleApply = (e) => {
     e.preventDefault();
     if (!currentUser) { alert("Please Sign In to Apply!"); return; }
@@ -38,21 +45,43 @@ export default function Home() {
       <section id="home" className="relative min-h-screen flex flex-col items-center justify-center py-20 overflow-hidden">
         <div className="absolute inset-0 bg-grid-pattern pointer-events-none mask-radial-faded"></div>
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-blue-900/10 via-[#020617] to-[#020617]"></div>
-        <div className="relative z-10 text-center space-y-10 max-w-6xl px-4">
+        <div className="relative z-10 text-center space-y-8 max-w-7xl px-4">
+          
+          {/* Logo Container - Grows with the logo */}
           <motion.div initial={{ opacity: 0, scale: 0.5, y: -20 }} animate={{ opacity: 1, scale: 1, y: [0, -15, 0] }} transition={{ duration: 0.8, y: { duration: 3, repeat: Infinity, ease: "easeInOut" }}}>
-             <img src={heroLogo} style={{ height: "var(--hero-logo-h)" }} className="relative z-10 w-auto mx-auto object-contain brightness-0 invert drop-shadow-[0_0_45px_rgba(14,165,233,0.6)]" alt="Hero Logo" />
+             <img src={heroLogo} style={{ height: "var(--hero-logo-h)" }} className="relative z-10 w-auto mx-auto object-contain brightness-0 invert drop-shadow-[0_0_45px_rgba(14,165,233,0.6)] transition-all duration-300 hover:drop-shadow-[0_0_80px_rgba(14,165,233,0.9)]" alt="Hero Logo" />
           </motion.div>
-          <motion.h1 initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.3 }} className="text-4xl md:text-6xl lg:text-8xl font-bold tracking-tight leading-tight">
-            Where Every Search <br/> Has a <span className="text-[#0ea5e9]">Value</span>
+
+          {/* ANIMATED TEXT - Smaller & One Line */}
+          <motion.h1 
+            className="text-2xl md:text-4xl lg:text-5xl font-bold tracking-wide leading-tight whitespace-nowrap overflow-visible"
+            initial="hidden"
+            animate="visible"
+            variants={{
+              visible: { transition: { staggerChildren: 0.05 } }
+            }}
+          >
+            {sentence.split("").map((char, index) => (
+              <motion.span key={index} variants={letterAnim}>{char}</motion.span>
+            ))}
+            <motion.span 
+              initial={{ opacity: 0, scale: 0 }} 
+              animate={{ opacity: 1, scale: 1 }} 
+              transition={{ delay: 1.5, type: "spring", stiffness: 200 }}
+              className="text-[#0ea5e9] inline-block ml-1"
+            >
+              Value
+            </motion.span>
           </motion.h1>
-          <div className="flex flex-wrap justify-center gap-4 pt-8">
-            <a href="#research" className="inline-block bg-[#0ea5e9] text-black px-12 py-5 rounded-full font-bold text-xl hover:scale-105 transition-transform">Explore Research</a>
-            <a href="#careers" className="inline-block bg-white/10 border border-white/20 text-white px-12 py-5 rounded-full font-bold text-xl hover:bg-white/20 transition-all">Join Us</a>
+          
+          <div className="flex flex-wrap justify-center gap-4 pt-4">
+            <a href="#research" className="inline-block bg-[#0ea5e9] text-black px-12 py-4 rounded-full font-bold text-lg hover:scale-105 transition-transform shadow-[0_0_20px_rgba(14,165,233,0.4)]">Explore Research</a>
+            <a href="#careers" className="inline-block bg-white/10 border border-white/20 text-white px-12 py-4 rounded-full font-bold text-lg hover:bg-white/20 transition-all">Join Us</a>
           </div>
         </div>
       </section>
 
-      {/* 2. OUR EXPERTISE (Card Grid - New Design) */}
+      {/* 2. OUR EXPERTISE (Card Grid) */}
       <section className="py-24 bg-[#010409] relative border-y border-white/5">
         <div className="max-w-7xl mx-auto px-6">
            <div className="text-center mb-16">
@@ -95,7 +124,7 @@ export default function Home() {
                   <div className="mt-6 pt-6 border-t border-white/5 flex items-center text-[#0ea5e9] text-sm font-bold gap-2 group-hover:gap-3 transition-all">Read More <ArrowRight size={16}/></div>
                 </div>
               </div>
-            )) : <div className="col-span-3 text-center py-16 border border-dashed border-white/10 rounded-2xl text-gray-500">No Featured Updates.</div>}
+            )) : <div className="col-span-3 text-center py-16 border border-dashed border-white/10 rounded-2xl text-gray-500">No Featured Updates. Select them in Admin.</div>}
           </div>
         </div>
       </section>
@@ -107,6 +136,7 @@ export default function Home() {
               <h2 className="text-3xl md:text-5xl font-bold mb-4">Open <span className="text-[#0ea5e9]">Positions</span></h2>
               <p className="text-gray-400 max-w-2xl mx-auto">Join our team of researchers and engineers building the future of data.</p>
             </div>
+            
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
               {jobs.map(job => (
                 <div key={job.id} className={`bg-[#020617] p-8 rounded-2xl border ${job.status === 'open' ? 'border-white/10 hover:border-[#0ea5e9]' : 'border-red-900/30 opacity-60'} transition-all group flex flex-col justify-between min-h-[250px]`}>
@@ -130,7 +160,7 @@ export default function Home() {
          </div>
       </section>
 
-      {/* 5. ABOUT US & GALLERY BUTTON */}
+      {/* 5. ABOUT US */}
       <section id="about" className="py-24 relative overflow-hidden">
         <div className="max-w-7xl mx-auto px-6 relative z-10 grid md:grid-cols-2 gap-16 items-center">
            <div className="order-2 md:order-1">
